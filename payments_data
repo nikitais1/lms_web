@@ -1,0 +1,62 @@
+[
+  {
+    "model": "users.payment",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "payments_date": "2024-01-09T20:27:50.800Z",
+      "paid_course": 2,
+      "paid_lesson": null,
+      "payment_sum": 57421,
+      "payment_method": "cash"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "payments_date": "2023-09-14T18:27:15.847Z",
+      "paid_course": null,
+      "paid_lesson": 3,
+      "payment_sum": 85453,
+      "payment_method": "card"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "payments_date": "2024-01-14T07:24:34.423Z",
+      "paid_course": 3,
+      "paid_lesson": null,
+      "payment_sum": 15357,
+      "payment_method": "cash"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "payments_date": "2024-01-25T08:14:50.541Z",
+      "paid_course": null,
+      "paid_lesson": 6,
+      "payment_sum": 7541,
+      "payment_method": "card"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 5,
+    "fields": {
+      "user": 4,
+      "payments_date": "2024-02-04T23:25:11.187Z",
+      "paid_course": 2,
+      "paid_lesson": null,
+      "payment_sum": 42474,
+      "payment_method": "cash"
+    }
+  },
+]

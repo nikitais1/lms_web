@@ -6,8 +6,8 @@ from lesson.views import LessonCreateAPIView, LessonListAPIView, LessonRetrieveA
     LessonDestroyAPIView
 
 app_name = LessonConfig.name
-router = DefaultRouter()
 
+router = DefaultRouter()
 
 urlpatterns = [
     path('lesson/create/', LessonCreateAPIView.as_view(), name='create_lesson'),
