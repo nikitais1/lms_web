@@ -1,5 +1,6 @@
 from django.db import models
 
+from config import settings
 from course.models import Course
 
 NULLABLE = {'null': True, 'blank': True}
@@ -11,6 +12,7 @@ class Lesson(models.Model):
     description = models.TextField(verbose_name='Описание', **NULLABLE)
     link_to_video = models.URLField(verbose_name='Ссылка на видео', **NULLABLE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс', **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE)
 
     class Meta:
         verbose_name = 'Урок'

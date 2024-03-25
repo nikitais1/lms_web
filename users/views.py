@@ -1,44 +1,48 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, generics
+from rest_framework import generics
 from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
-from users.models import User, Payment
-from users.serializers import UserSerializer, PaymentsSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
-
-class UserViewSet(viewsets.ModelViewSet):
-    """Класс для просмотра пользователей"""
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
+from .models import Payment, User
+from .permissions import IsModerator
+from .serializers import PaymentSerializer, UserSerializer
 
 
-class UserRetrieveView(generics.RetrieveAPIView):
-    """Класс для просмотра пользователя"""
-    serializer_class = UserSerializer
-
-
-class UserUpdateView(generics.UpdateAPIView):
-    """Класс для обновления пользователя"""
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-
-
-class UserListView(generics.ListAPIView):
-    """Класс для просмотра пользователя"""
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-
-
-class UserDestroyView(generics.DestroyAPIView):
-    """Класс для удаления пользователя"""
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-
-
-class PaymentListAPIView(generics.ListAPIView):
-    """Класс для просмотра списка платежей"""
-    serializer_class = PaymentsSerializer
+class PaymentsAPIListView(generics.ListAPIView):
+    """Для показа всех данных о пользователе"""
+    serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ('paid_course', 'paid_lesson', 'payment_method')
-    ordering_fields = ('payments_date',)
+    permission_classes = [IsAuthenticated]
+
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_fields = ("payed_course", "payed_lesson", "payment_type")
+    ordering_fields = ("payment_date",)
+
+
+class UserAPIListView(generics.ListAPIView):
+    """Просмотр всех пользователей"""
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+class UserCreateAPIView(generics.CreateAPIView):
+    """Создание пользователя"""
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+
+
+class UserUpdateAPIView(generics.UpdateAPIView):
+    """Изменение пользователя"""
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = [IsModerator]
+
+
+class UserDeleteAPIView(generics.DestroyAPIView):
+    """Удаление пользователя"""
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = [IsModerator]
