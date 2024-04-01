@@ -16,3 +16,12 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CourseSubscribe(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, **NULLABLE, verbose_name="Курс",)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name="Пользователь")
+
+    class Meta:
+        verbose_name = "Пописка"
+        verbose_name_plural = "Пописки"

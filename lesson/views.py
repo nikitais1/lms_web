@@ -3,6 +3,7 @@ from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+from course.paginators import MyPagination
 from lesson.models import Lesson
 from lesson.permissions import IsOwner
 from lesson.serializers import LessonSerializer
@@ -29,6 +30,13 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
+    pagination_class = MyPagination
+
+    def get(self, request):
+        queryset = Lesson.objects.all()
+        paginated_queryset = self.paginate_queryset(queryset)
+        serializer = LessonSerializer(paginated_queryset, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def get_queryset(self):
         if self.request.user.groups.filter(name='moderators').exists():
@@ -50,4 +58,3 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     permission_classes = [IsAdminUser, IsOwner]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-
