@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from course.models import Course
+from course.models import Course, CourseSubscribe
 from lesson.models import Lesson
 
 
@@ -27,3 +27,9 @@ class CourseSerializer(serializers.ModelSerializer):
         course.owner = user
         course.save()
         return course
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseSubscribe
+        fields = '__all__'
