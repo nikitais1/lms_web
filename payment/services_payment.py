@@ -97,7 +97,7 @@ class StripePayment:
             payment_method=stripe.PaymentMethod.create(
                 type='card',
                 card={
-                    'number': '1234567891234567',
+                    'number': '4000056655665556',
                     'exp_month': 10,
                     'exp_year': 2024,
                     'cvc': '898',
