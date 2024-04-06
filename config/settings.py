@@ -41,15 +41,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Сторонние фреймворки
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
-    'drf_yasg',
-    'corsheaders',
 
+    # Блок с документацией
+    'drf_yasg',
+
+    # Созданные приложения
     'users',
     'course',
     'lesson',
+    'payment'
 ]
 
 REST_FRAMEWORK = {
@@ -76,20 +80,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
-
-CORS_ALLOWED_ORIGINS = [
-    "<http://localhost:8000>",
-    "https://read-and-write.example.com",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://read-and-write.example.com",
-
-]
-
-CORS_ALLOW_ALL_ORIGINS = False
 
 ROOT_URLCONF = 'config.urls'
 
@@ -167,7 +158,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login/'
 
+STRIPE_SECRET_KEY='sk_test_51P2CtU077d2e6sQjjmJDrVMp90BgYafNFnrlaIZL6frOTkhjK4GicrSuk1WNuAJcuMOMMS3Xked9Oj2j7REW6PAc00Q2UEUK5n'
