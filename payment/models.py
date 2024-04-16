@@ -4,7 +4,6 @@ from course.models import Course
 from lesson.models import Lesson
 from users.models import User
 
-
 NULLABLE = {'null': True, 'blank': True}
 
 
@@ -30,4 +29,3 @@ class Payments(models.Model):
 
         verbose_name = "Оплата пользователя"
         verbose_name_plural = "Оплаты пользователя"
-        

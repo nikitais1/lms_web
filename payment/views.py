@@ -13,6 +13,7 @@ class PaymentAPIView(APIView):
     """Класс для возможности совершать платежи"""
 
     def post(self, *args, **kwargs):
+        # sourcery skip: extract-method, remove-unnecessary-else, use-named-expression
         course_id = self.request.data["course"]
         course_item = get_object_or_404(Course, pk=course_id)
         if course_item:

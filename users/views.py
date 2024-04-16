@@ -1,23 +1,10 @@
 from rest_framework import generics
-from rest_framework.filters import OrderingFilter
-from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from .models import Payment, User
+from .models import User
 from .permissions import IsModerator
-from .serializers import PaymentSerializer, UserSerializer
-
-
-class PaymentsAPIListView(generics.ListAPIView):
-    """Для показа всех данных о пользователе"""
-    serializer_class = PaymentSerializer
-    queryset = Payment.objects.all()
-    permission_classes = [IsAuthenticated]
-
-    filter_backends = (DjangoFilterBackend, OrderingFilter)
-    filterset_fields = ("payed_course", "payed_lesson", "payment_type")
-    ordering_fields = ("payment_date",)
+from .serializers import UserSerializer
 
 
 class UserAPIListView(generics.ListAPIView):
