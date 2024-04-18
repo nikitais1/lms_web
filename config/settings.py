@@ -195,7 +195,7 @@ SIMPLE_JWT = {
 
 CELERY_BEAT_SCHEDULE = {
     'task_name': {
-        'task': 'user_app.tasks.check_last_login_date',
+        'task': 'users.tasks.check_last_login_date',
         'schedule': timedelta(seconds=30),
     },
 }
