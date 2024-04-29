@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from course.models import Course
-from payment.services_payment import StripePayment
+from materials_app.models import Course
+from payment_app.services_payment import StripePayment
 from .models import Payments
 
 

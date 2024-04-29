@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
@@ -6,8 +7,10 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from config import settings
 from course.models import Course, CourseSubscribe
 from course.serializers import CourseSerializer
+from users.models import User
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -27,6 +30,21 @@ class CourseViewSet(viewsets.ModelViewSet):
         if not self.request.user.is_moderator:
             qs = qs.owner(self.request.user)
         return qs
+
+    def create(self, validated_data):
+        """Автоматическое добавление пользователя в новый экземпляр класса"""
+        course = Course(**validated_data)
+        subscribes = CourseSubscribe.objects.all()
+
+        users_id_to_send = subscribes.filter(course=course).values_list('user', flat=True)
+        user_emails_list = User.objects.filter(id__in=users_id_to_send).values_list('email', flat=True)
+        emails = list(user_emails_list)
+        send_mail(
+            subject=f"Изменение курса {course.title}",
+            message=f"Курс {course.title} был изменен",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=emails
+        ).delay()
 
 
 class SubscriptionAPIView(APIView):
