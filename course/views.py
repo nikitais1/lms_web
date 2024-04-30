@@ -11,6 +11,7 @@ from config import settings
 from course.models import Course, CourseSubscribe
 from course.serializers import CourseSerializer
 from users.models import User
+from course.signals import handle_course_save
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -30,6 +31,12 @@ class CourseViewSet(viewsets.ModelViewSet):
         if not self.request.user.is_moderator:
             qs = qs.owner(self.request.user)
         return qs
+
+    def perform_update(self, serializer):
+        """Метод для запуска функции отправки уведомлений об обновлении курса"""
+        update_course = serializer.save()
+        handle_course_save.delay(update_course.id)
+        update_course.save()
 
     def create(self, validated_data):
         """Автоматическое добавление пользователя в новый экземпляр класса"""
