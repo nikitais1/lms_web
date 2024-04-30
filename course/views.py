@@ -32,26 +32,15 @@ class CourseViewSet(viewsets.ModelViewSet):
             qs = qs.owner(self.request.user)
         return qs
 
+    def perform_create(self, serializer):
+        """Автоматическое добавление пользователя в новый экземпляр класса"""
+        serializer.save(owner=self.request.user)
+
     def perform_update(self, serializer):
         """Метод для запуска функции отправки уведомлений об обновлении курса"""
         update_course = serializer.save()
         handle_course_save.delay(update_course.id)
         update_course.save()
-
-    def create(self, validated_data):
-        """Автоматическое добавление пользователя в новый экземпляр класса"""
-        course = Course(**validated_data)
-        subscribes = CourseSubscribe.objects.all()
-
-        users_id_to_send = subscribes.filter(course=course).values_list('user', flat=True)
-        user_emails_list = User.objects.filter(id__in=users_id_to_send).values_list('email', flat=True)
-        emails = list(user_emails_list)
-        send_mail(
-            subject=f"Изменение курса {course.title}",
-            message=f"Курс {course.title} был изменен",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=emails
-        ).delay()
 
 
 class SubscriptionAPIView(APIView):
