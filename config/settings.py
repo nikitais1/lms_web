@@ -110,10 +110,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASES_NAME'),
-        'USER': os.getenv('DATABASES_USER'),
-        'PASSWORD': os.getenv('DATABASES_PASSWORD'),
-        'HOST': os.getenv('DATABASES_HOST')
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST')
     }
 }
 
@@ -167,9 +167,15 @@ LOGIN_URL = 'login/'
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
-CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_TIMEZONE = os.getenv('CELERY_TIMEZONE')
+CELERY_BEAT_SCHEDULE = {
+    'task_name': {
+        'task': 'users.tasks.check_last_login_date',
+        'schedule': timedelta(seconds=30),
+    },
+}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
@@ -193,9 +199,3 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': True
 }
 
-CELERY_BEAT_SCHEDULE = {
-    'task_name': {
-        'task': 'users.tasks.check_last_login_date',
-        'schedule': timedelta(seconds=30),
-    },
-}

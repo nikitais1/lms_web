@@ -2,9 +2,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from materials_app.models import Course
-from payment_app.services_payment import StripePayment
+from course.models import Course
 from .models import Payments
+from .services_payment import StripePayment
 
 
 # Create your views here.
